@@ -1,5 +1,17 @@
-from core.transcriber import transcribe_all
-from utils.audio_processor import process_input
+import os
+from dotenv import load_dotenv
 
-chunks = process_input("https://youtu.be/5DfVeofl37o?si=RDf4xAQSFo2nwB3s")
-print(transcribe_all(chunks))
+load_dotenv(override=True)
+
+print("KEY:", os.getenv("MISTRAL_API_KEY")[:10])
+
+from langchain_mistralai import ChatMistralAI
+
+llm = ChatMistralAI(
+    model="mistral-small-latest",
+    api_key=os.getenv("MISTRAL_API_KEY")
+)
+
+response = llm.invoke("Explain RAG in one sentence")
+
+print(response.content)
